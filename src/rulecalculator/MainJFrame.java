@@ -360,6 +360,12 @@ public class MainJFrame extends javax.swing.JFrame {
             jLabel14.setText(step.getErrorMessage());
             FactHandle stepFact = rManager.insert(step);
             rManager.fireAll();
+            jFormattedTextField4.setText(Double.toString(step.getV()));
+            jFormattedTextField5.setText(Double.toString(step.getP()));
+            jFormattedTextField6.setText(Double.toString(step.getM()));
+            jFormattedTextField7.setText(Double.toString(step.getN()));
+            jFormattedTextField8.setText(Double.toString(step.getF()));
+            
         } catch (Exception ex) {
             Throwable t = ex;
             t.printStackTrace();
