@@ -15,7 +15,7 @@ import rulecalculator.TurningStepBean.TurningType;
 import rulecalculator.TurningStepBean.WorkpieceType;
 import rulecalculator.TurningStepBean.InstrumentMaterial;
 import javax.swing.JOptionPane;
-
+import java.lang.Math;
 
 rule "Diameter is too small" 
     when
@@ -84,6 +84,46 @@ end
 //    then
 //        $step.kpv=1;
 //end
+
+rule "Calculate V" salience -10
+    lock-on-active true
+    when
+        step : TurningStepBean (incorrect == false)
+    then
+        modify(step){setV((step.cv/(Math.pow(step.durability,step.mv)*Math.pow(step.t,step.xv)*Math.pow(step.s,step.yv)))*step.kmv*step.kpv*step.kiv)}
+end
+
+rule "Calculate Pz" salience -20
+    lock-on-active true
+    when
+        step : TurningStepBean (incorrect == false)
+    then
+        modify(step){setP(10*step.cp*Math.pow(step.t,step.xp)*Math.pow(step.s,step.yp)*Math.pow(step.v,step.np)*step.kmp)}
+end
+
+rule "Calculate M" salience -30
+    lock-on-active true
+    when
+        step : TurningStepBean (incorrect == false)
+    then
+        modify(step){setM(step.P*step.diameter/200)}
+end
+
+rule "Calculate N" salience -40
+    lock-on-active true
+    when
+        step : TurningStepBean (incorrect == false)
+    then
+        modify(step){setN(step.P*step.v/(1020*60))}
+end
+
+rule "Calculate f" salience -50
+    lock-on-active true
+    when
+        step : TurningStepBean (incorrect == false)
+    then
+        modify(step){setF(1000*step.v/(Math.PI*step.diameter))}
+end
 
 rule "Print" salience -100
     when
